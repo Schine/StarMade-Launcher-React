@@ -2,6 +2,7 @@ import React from 'react';
 import { CogIcon, FolderIcon, TrashIcon, PlayIcon } from './icons';
 import { getIconComponent } from '../../utils/getIconComponent';
 import type { ManagedItem } from '../../types';
+import Tooltip from './Tooltip';
 
 interface ItemCardProps {
   item: ManagedItem;
@@ -36,15 +37,21 @@ const ItemCard: React.FC<ItemCardProps> = ({ item, isFeatured, onEdit, actionBut
                 <PlayIcon className="w-4 h-4" />
                 <span>{actionButtonText}</span>
             </button>
-            <button className="p-2 rounded-md hover:bg-white/10 transition-colors" aria-label="Open Folder">
-                <FolderIcon className="w-5 h-5 text-gray-400" />
-            </button>
-            <button onClick={() => onEdit(item)} className="p-2 rounded-md hover:bg-white/10 transition-colors" aria-label="Settings">
-                <CogIcon className="w-5 h-5 text-gray-400" />
-            </button>
-            <button className="p-2 rounded-md hover:bg-starmade-danger/20 transition-colors" aria-label="Delete">
-                <TrashIcon className="w-5 h-5 text-gray-400 hover:text-starmade-danger-light" />
-            </button>
+            <Tooltip text="Open Directory">
+                <button className="p-2 rounded-md hover:bg-white/10 transition-colors" aria-label="Open Folder">
+                    <FolderIcon className="w-5 h-5 text-gray-400" />
+                </button>
+            </Tooltip>
+            <Tooltip text="Settings">
+                <button onClick={() => onEdit(item)} className="p-2 rounded-md hover:bg-white/10 transition-colors" aria-label="Settings">
+                    <CogIcon className="w-5 h-5 text-gray-400" />
+                </button>
+            </Tooltip>
+            <Tooltip text="Delete">
+                <button className="p-2 rounded-md hover:bg-starmade-danger/20 transition-colors" aria-label="Delete">
+                    <TrashIcon className="w-5 h-5 text-gray-400 hover:text-starmade-danger-light" />
+                </button>
+            </Tooltip>
         </div>
     </div>
 );

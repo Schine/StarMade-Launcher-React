@@ -8,6 +8,31 @@ interface NewsProps {
     onNavigate: (page: Page, props?: PageProps) => void;
 }
 
+const NewsContent: React.FC<{ text: string }> = ({ text }) => {
+    // Split the text by [c]...[/c] tags, keeping the tags as part of the result array
+    const parts = text.split(/(\[c\].*?\[\/c\])/g);
+
+    return (
+        <>
+            {parts.map((part, i) => {
+                if (part.startsWith('[c]') && part.endsWith('[/c]')) {
+                    // This is a code block, render it as a <code> element
+                    return (
+                        <code
+                            key={i}
+                            className="bg-slate-800 text-starmade-text-accent font-mono py-0.5 px-1.5 rounded-sm text-xs"
+                        >
+                            {part.substring(3, part.length - 4)}
+                        </code>
+                    );
+                }
+                // This is a normal text part
+                return part;
+            })}
+        </>
+    );
+};
+
 const News: React.FC<NewsProps> = ({ onNavigate }) => {
     const { news, loading, error } = useNewsFetch();
 
@@ -51,7 +76,9 @@ const News: React.FC<NewsProps> = ({ onNavigate }) => {
                             <div className="flex-1">
                                 <p className="text-sm text-gray-400 mb-1">{item.pubDate} by {item.author}</p>
                                 <h2 className="font-display text-xl font-bold text-white group-hover:text-starmade-text-accent transition-colors mb-2">{item.title}</h2>
-                                <p className="text-gray-300 text-sm leading-relaxed">{item.contentSnippet}</p>
+                                <p className="text-gray-300 text-sm leading-relaxed">
+                                    <NewsContent text={item.contentSnippet} />
+                                </p>
                                 <div className="mt-3 flex items-center text-starmade-text-accent font-semibold text-sm">
                                     <span>Read More</span>
                                     <ChevronRightIcon className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" />
